@@ -19,9 +19,9 @@ function App() {
         e.preventDefault();
         try {
             const response = await axios.post('https://658aa7e7ba789a96223780e2.mockapi.io/clocks', formData);
-            console.log('Товар успешно добавлен:', response.data);
+            alert('Товар успешно добавлен:', response.data);
         } catch (error) {
-            console.error('Произошла ошибка:', error.message);
+            alert('Произошла ошибка:', error.message);
         }
     };
 
@@ -38,7 +38,7 @@ function App() {
                 <label htmlFor="price">Цена:</label>
                 <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} />
                 <br />
-                <label htmlFor="image">Ссылка на изображение:</label> {/* Изменили текст метки */}
+                <label htmlFor="image">Ссылка на изображение:</label>
                 <input type="text" id="image" name="image" value={formData.image} onChange={handleChange} /> {/* Тип поля теперь text */}
                 <br />
                 <button type="submit">Отправить</button>
