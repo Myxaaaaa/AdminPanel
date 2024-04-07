@@ -7,8 +7,11 @@ function App() {
         title: '',
         description: '',
         price: '',
-        image: '' // Теперь image будет текстовым полем
+        image: ''
     });
+    const [modalType, setModalType] = useState('');
+    const [modalMessage, setModalMessage] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,14 +22,23 @@ function App() {
         e.preventDefault();
         try {
             const response = await axios.post('https://658aa7e7ba789a96223780e2.mockapi.io/clocks', formData);
-            alert('Товар успешно добавлен:', response.data);
+            setModalType('success');
+            setModalMessage('Товар успешно добавлен');
+            setShowModal(true);
         } catch (error) {
-            alert('Произошла ошибка:', error.message);
+            setModalType('error');
+            setModalMessage('Произошла ошибка при добавлении товара');
+            setShowModal(true);
+            console.error('Произошла ошибка:', error.message);
         }
     };
 
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
     return (
-        <div>
+        <div className="container">
             <h2>Добавить новый товар</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Название:</label>
@@ -39,10 +51,18 @@ function App() {
                 <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} />
                 <br />
                 <label htmlFor="image">Ссылка на изображение:</label>
-                <input type="text" id="image" name="image" value={formData.image} onChange={handleChange} /> {/* Тип поля теперь text */}
+                <input type="text" id="image" name="image" value={formData.image} onChange={handleChange} />
                 <br />
                 <button type="submit">Отправить</button>
             </form>
+            {showModal && (
+                <div className={`modal ${modalType}`} onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <p>{modalMessage}</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
