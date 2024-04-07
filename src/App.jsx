@@ -20,11 +20,28 @@ function App() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Проверяем, что все поля заполнены
+        if (!formData.title || !formData.description || !formData.price || !formData.image) {
+            setModalType('error');
+            setModalMessage('Пожалуйста, заполните все поля');
+            setShowModal(true);
+            return;
+        }
+
         try {
             const response = await axios.post('https://658aa7e7ba789a96223780e2.mockapi.io/clocks', formData);
             setModalType('success');
             setModalMessage('Товар успешно добавлен');
             setShowModal(true);
+
+            // Очищаем все поля после успешного добавления товара
+            setFormData({
+                title: '',
+                description: '',
+                price: '',
+                image: ''
+            });
         } catch (error) {
             setModalType('error');
             setModalMessage('Произошла ошибка при добавлении товара');
